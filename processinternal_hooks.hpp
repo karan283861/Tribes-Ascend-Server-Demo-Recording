@@ -1,0 +1,10 @@
+#pragma once
+
+#include <uhook.hpp>
+
+PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState);
+PROCESSINTERNAL_HOOK(ActorSetInitialState);
+PROCESSINTERNAL_HOOK(TrPlayerControllerReceiveLocalizedMessage);
+PROCESSINTERNAL_HOOK(TrPlayerControllerClientShowAccoladeText);
+PROCESSINTERNAL_HOOK(TrPlayerControllerClientSetHUD);
+PROCESSINTERNAL_HOOK(TrPawnClientUpdateHUDHealth);
