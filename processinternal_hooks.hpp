@@ -8,3 +8,5 @@ PROCESSINTERNAL_HOOK(TrPlayerControllerReceiveLocalizedMessage);
 PROCESSINTERNAL_HOOK(TrPlayerControllerClientShowAccoladeText);
 PROCESSINTERNAL_HOOK(TrPlayerControllerClientSetHUD);
 PROCESSINTERNAL_HOOK(TrPawnClientUpdateHUDHealth);
+PROCESSINTERNAL_HOOK(WeaponClientGivenTo);
+PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice);

@@ -81,7 +81,13 @@ void PerformUFunctionHooks()
 		{.name_ = "Function TribesGame.TrPlayerController.ClientSetHUD", .hook_function_ = TrPlayerControllerClientSetHUD, .hook_type_ = FunctionHookType::kPre, .hook_absorb_ = FunctionHookAbsorb::kAbsorb},
 
 		// !! Legacy comment (Allow players to spawn in and have non zero health/no zero max health)
-		{.name_ = "Function TribesGame.TrPawn.ClientUpdateHUDHealth", .hook_function_ = TrPawnClientUpdateHUDHealth, .hook_type_ = FunctionHookType::kPost}};
+		{.name_ = "Function TribesGame.TrPawn.ClientUpdateHUDHealth", .hook_function_ = TrPawnClientUpdateHUDHealth, .hook_type_ = FunctionHookType::kPre, .hook_absorb_ = FunctionHookAbsorb::kAbsorb},
+
+		// Allow players to spawn with loadout equipped
+		{.name_ = "Function Engine.Weapon.ClientGivenTo", .hook_function_ = WeaponClientGivenTo, .hook_type_ = FunctionHookType::kPre, .hook_absorb_ = FunctionHookAbsorb::kAbsorb},
+
+		// Fix issue with grenades (and melee) auto firing and not returning to previous weapon after exuasting emmo
+		{.name_ = "Function TribesGame.TrDevice_AutoFire.SwitchToPostFireDevice", .hook_function_ = TrDevice_AutoFireSwitchToPostFireDevice, .hook_type_ = FunctionHookType::kPre, .hook_absorb_ = FunctionHookAbsorb::kAbsorb}};
 
 	for (const auto &ufunction_hook_information : processinternal_hooks_informations)
 	{

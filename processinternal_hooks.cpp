@@ -58,3 +58,33 @@ PROCESSINTERNAL_HOOK(TrPlayerControllerClientSetHUD)
 PROCESSINTERNAL_HOOK(TrPawnClientUpdateHUDHealth)
 {
 }
+
+PROCESSINTERNAL_HOOK(WeaponClientGivenTo)
+{
+	static auto lock{false};
+	if (lock)
+	{
+		return;
+	}
+	auto weapon{reinterpret_cast<AWeapon *>(calling_uobject)};
+	if (weapon->Instigator)
+	{
+		lock = true;
+		// This will call ProcessEvent -> ProcessInternal and come back to this function, so we lock before calling it
+		weapon->ClientGivenTo(weapon->Instigator, false);
+	}
+	lock = false;
+}
+
+PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
+{
+	auto device{reinterpret_cast<ATrDevice_AutoFire *>(calling_uobject)};
+	auto inventory_manager{reinterpret_cast<ATrInventoryManager *>(device->InvManager)};
+	auto instigator{reinterpret_cast<Player *>(inventory_manager->Instigator)};
+	device->ClientWeaponThrown();
+	if (device->m_PostFireDevice)
+	{
+		device->m_PostFireDevice->ClientGivenTo(instigator, false);
+		device->m_PostFireDevice->ClientWeaponSet(true, false);
+	}
+}
