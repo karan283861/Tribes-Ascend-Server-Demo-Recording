@@ -78,6 +78,7 @@ PROCESSINTERNAL_HOOK(WeaponClientGivenTo)
 
 PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
 {
+	// Not sure how much of the code below is actually needed for the functionality
 	auto device{reinterpret_cast<ATrDevice_AutoFire *>(calling_uobject)};
 	auto inventory_manager{reinterpret_cast<ATrInventoryManager *>(device->InvManager)};
 	auto instigator{reinterpret_cast<Player *>(inventory_manager->Instigator)};
