@@ -9,7 +9,7 @@
 #include "helper.hpp"
 #include "processinternal_hooks.hpp"
 
-PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState)
+UE3_PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState)
 {
 	auto now{std::chrono::system_clock::now()};
 	auto date_string{std::format("{:%d-%m-%Y_%H-%M}", now)};
@@ -19,47 +19,51 @@ PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState)
 	g_game_engine->DeferredCommands.Add(FString(const_cast<wchar_t *>(g_demo_command.c_str())));
 }
 
-PROCESSINTERNAL_HOOK(ActorSetInitialState)
+UE3_PROCESSINTERNAL_HOOK(ActorSetInitialState)
 {
-	if (calling_uobject->Class == kDemoRecControllerClass)
+	auto controller{reinterpret_cast<AController *>(calling_uobject)};
+	if (controller->Class == kDemoRecControllerClass)
 	{
 		return;
 	}
 	original_processinternal(calling_uobject, unused, stack, result);
 }
 
-PROCESSINTERNAL_HOOK(TrPlayerControllerReceiveLocalizedMessage)
+UE3_PROCESSINTERNAL_HOOK(TrPlayerControllerReceiveLocalizedMessage)
 {
-	if (calling_uobject->Class == kDemoRecControllerClass)
+	auto controller{reinterpret_cast<AController *>(calling_uobject)};
+	if (controller->Class == kDemoRecControllerClass)
 	{
 		return;
 	}
 	original_processinternal(calling_uobject, unused, stack, result);
 }
 
-PROCESSINTERNAL_HOOK(TrPlayerControllerClientShowAccoladeText)
+UE3_PROCESSINTERNAL_HOOK(TrPlayerControllerClientShowAccoladeText)
 {
-	if (calling_uobject->Class == kDemoRecControllerClass)
+	auto controller{reinterpret_cast<AController *>(calling_uobject)};
+	if (controller->Class == kDemoRecControllerClass)
 	{
 		return;
 	}
 	original_processinternal(calling_uobject, unused, stack, result);
 }
 
-PROCESSINTERNAL_HOOK(TrPlayerControllerClientSetHUD)
+UE3_PROCESSINTERNAL_HOOK(TrPlayerControllerClientSetHUD)
 {
-	if (calling_uobject->Class == kDemoRecControllerClass)
+	auto controller{reinterpret_cast<AController *>(calling_uobject)};
+	if (controller->Class == kDemoRecControllerClass)
 	{
 		return;
 	}
 	original_processinternal(calling_uobject, unused, stack, result);
 }
 
-PROCESSINTERNAL_HOOK(TrPawnClientUpdateHUDHealth)
+UE3_PROCESSINTERNAL_HOOK(TrPawnClientUpdateHUDHealth)
 {
 }
 
-PROCESSINTERNAL_HOOK(WeaponClientGivenTo)
+UE3_PROCESSINTERNAL_HOOK(WeaponClientGivenTo)
 {
 	static auto lock{false};
 	if (lock)
@@ -76,7 +80,7 @@ PROCESSINTERNAL_HOOK(WeaponClientGivenTo)
 	lock = false;
 }
 
-PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
+UE3_PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
 {
 	// Not sure how much of the code below is actually needed for the functionality
 	auto device{reinterpret_cast<ATrDevice_AutoFire *>(calling_uobject)};

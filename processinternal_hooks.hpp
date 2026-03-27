@@ -2,11 +2,13 @@
 
 #include <uhook.hpp>
 
-PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState);
-PROCESSINTERNAL_HOOK(ActorSetInitialState);
-PROCESSINTERNAL_HOOK(TrPlayerControllerReceiveLocalizedMessage);
-PROCESSINTERNAL_HOOK(TrPlayerControllerClientShowAccoladeText);
-PROCESSINTERNAL_HOOK(TrPlayerControllerClientSetHUD);
-PROCESSINTERNAL_HOOK(TrPawnClientUpdateHUDHealth);
-PROCESSINTERNAL_HOOK(WeaponClientGivenTo);
-PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice);
+using namespace UE3;
+
+UE3_PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState);
+UE3_PROCESSINTERNAL_HOOK(ActorSetInitialState);
+UE3_PROCESSINTERNAL_HOOK(TrPlayerControllerReceiveLocalizedMessage);
+UE3_PROCESSINTERNAL_HOOK(TrPlayerControllerClientShowAccoladeText);
+UE3_PROCESSINTERNAL_HOOK(TrPlayerControllerClientSetHUD);
+UE3_PROCESSINTERNAL_HOOK(TrPawnClientUpdateHUDHealth);
+UE3_PROCESSINTERNAL_HOOK(WeaponClientGivenTo);
+UE3_PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice);
