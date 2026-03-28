@@ -23,7 +23,7 @@
 
 using namespace UE3;
 
-#define HOOK_CALLFUNCTION
+// #define HOOK_CALLFUNCTION
 #define LOG_FILE_NAME "ServerDemoRecording.txt"
 
 constexpr size_t kProcessEventAddress{0x00456F90};
