@@ -11,6 +11,8 @@ using DemoRecController = ATrDemoRecSpectator;
 extern UGameEngine *g_game_engine;
 extern std::wstring g_demo_command;
 
+bool IsPlayerValid(Player *player);
+
 // Get all instances of a specific UObject type in the GObjects buffer.
 template <class T>
 std::vector<T *> GetInstancesUObjects(void)

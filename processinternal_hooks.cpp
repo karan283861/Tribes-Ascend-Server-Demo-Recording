@@ -84,12 +84,38 @@ UE3_PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
 {
 	// Not sure how much of the code below is actually needed for the functionality
 	auto device{reinterpret_cast<ATrDevice_AutoFire *>(calling_uobject)};
-	auto inventory_manager{reinterpret_cast<ATrInventoryManager *>(device->InvManager)};
-	auto instigator{reinterpret_cast<Player *>(inventory_manager->Instigator)};
-	device->ClientWeaponThrown();
-	if (device->m_PostFireDevice)
+
+	device->StopFire(0);
+	device->StopFire(1);
+
+	if (auto player{reinterpret_cast<Player *>(device->Instigator)}; IsPlayerValid(player) && device->m_PostFireDevice)
 	{
-		device->m_PostFireDevice->ClientGivenTo(instigator, false);
+		device->m_PostFireDevice->ClientGivenTo(player, false);
 		device->m_PostFireDevice->ClientWeaponSet(true, false);
+
+		// player->StopFire(0);
+		// player->StopFire(0);
+		// player->SetPuttingDownWeapon(true);
+
+		// if (device->m_PostFireDevice)
+		// {
+		// 	PLOG_ERROR << "Post fire device: " << device->m_PostFireDevice->GetFullName();
+		// 	device->TryPutDown();
+		// 	player->ThrowActiveWeapon(false);
+		// 	player->EquipBestPossibleDevice(device->m_PostFireDevice->r_eEquipAt);
+		// }
 	}
+
+	// original_processinternal(calling_uobject, unused, stack, result);
+
+	return;
+
+	// auto inventory_manager{reinterpret_cast<ATrInventoryManager *>(device->InvManager)};
+	// auto instigator{reinterpret_cast<Player *>(inventory_manager->Instigator)};
+	// device->ClientWeaponThrown();
+	// if (device->m_PostFireDevice)
+	// {
+	// 	device->m_PostFireDevice->ClientGivenTo(instigator, false);
+	// 	device->m_PostFireDevice->ClientWeaponSet(true, false);
+	// }
 }
