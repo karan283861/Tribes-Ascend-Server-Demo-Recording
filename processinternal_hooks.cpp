@@ -9,6 +9,8 @@
 #include "helper.hpp"
 #include "processinternal_hooks.hpp"
 
+static bool is_demo_recording{};
+
 UE3_PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState)
 {
 	auto now{std::chrono::system_clock::now()};
@@ -17,6 +19,7 @@ UE3_PROCESSINTERNAL_HOOK(UTGameMatchInProgressBeginState)
 	std::wstring current_map_name{g_game_engine->GetCurrentWorldInfo()->GetURLMap().Data};
 	g_demo_command = std::wstring(L"demorec ").append(date_string_wide).append(L"_").append(current_map_name);
 	g_game_engine->DeferredCommands.Add(FString(const_cast<wchar_t *>(g_demo_command.c_str())));
+	is_demo_recording = true;
 }
 
 UE3_PROCESSINTERNAL_HOOK(ActorSetInitialState)
@@ -82,6 +85,13 @@ UE3_PROCESSINTERNAL_HOOK(WeaponClientGivenTo)
 
 UE3_PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
 {
+	// Keeping the below disabled so we can confirm demo recording dll successfully injected,
+	// as there is visible issues during warm up (described below)
+	// if (!is_demo_recording)
+	// {
+	// 	return original_processinternal(calling_uobject, unused, stack, result);
+	// }
+
 	// Not sure how much of the code below is actually needed for the functionality
 	auto device{reinterpret_cast<ATrDevice_AutoFire *>(calling_uobject)};
 
@@ -90,6 +100,7 @@ UE3_PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
 
 	if (auto player{reinterpret_cast<Player *>(device->Instigator)}; IsPlayerValid(player) && device->m_PostFireDevice)
 	{
+		// This implementation breaks during warm up (ie demo NOT recording)
 		device->m_PostFireDevice->ClientGivenTo(player, false);
 		device->m_PostFireDevice->ClientWeaponSet(true, false);
 
