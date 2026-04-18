@@ -87,10 +87,10 @@ UE3_PROCESSINTERNAL_HOOK(TrDevice_AutoFireSwitchToPostFireDevice)
 {
 	// Keeping the below disabled so we can confirm demo recording dll successfully injected,
 	// as there is visible issues during warm up (described below)
-	// if (!is_demo_recording)
-	// {
-	// 	return original_processinternal(calling_uobject, unused, stack, result);
-	// }
+	if (!is_demo_recording)
+	{
+		return original_processinternal(calling_uobject, unused, stack, result);
+	}
 
 	// Not sure how much of the code below is actually needed for the functionality
 	auto device{reinterpret_cast<ATrDevice_AutoFire *>(calling_uobject)};
